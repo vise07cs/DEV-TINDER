@@ -17,11 +17,11 @@ try {
 
 
 
-// app.use("/",(err,req,res,next)=>{
-//   if(err){
-//     res.status(501).send("something went wrong")
-//   }
-// })
+app.use("/",(err,req,res,next)=>{
+  if(err){
+    res.status(501).send("something went wrong")
+  }
+})
 
 
 
