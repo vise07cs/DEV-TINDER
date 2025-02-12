@@ -9,6 +9,8 @@ connectDB().then(()=>{
     app.listen(port,()=>{
       console.log("App running successfully on port 3001")
     });
+
+    // cleaner way to write code . 1st connect to the database and then listen to the server 
     
 
     
