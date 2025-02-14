@@ -31,8 +31,6 @@ app.post("/signup",async (req,res)=>{
 
 
 // API to get user info from emailid
-
-
 app.get("/user",async (req,res)=>{
   const userEmail=(req.body.email)
 try {
@@ -77,8 +75,36 @@ app.get("/id",async (req,res)=>{
     console.log(userbyId)
 })
 
+// API to delete a user from database
+app.delete("/user",async (req,res)=>{
+  const userId=req.body.userId;
+  try {
+    let deletedUser=await User.findByIdAndDelete(userId);
+    console.log(deletedUser.firstName+" " +deletedUser.lastName +" deleted")
+    res.send(userId+" deleted")
+    
+  } catch (error) {
+    res.status(404).send("Something went wrong")
+    
+  }
+})
 
 
+// API to update data of  a user in Database
+
+app.patch("/user",async (req,res)=>{
+  const userId=req.body.userId
+  try {
+    let updateUser=await User.findByIdAndUpdate(userId,{firstName:"nikhil from Zerodha "})
+    console.log(updateUser.firstName +" "+ "updated")
+    res.send("user updated successfully")    
+  } catch (error) {
+    res.status(404).send("Something went wrong")
+    
+    
+  }
+
+})
 
 
 connectDB().then(()=>{
