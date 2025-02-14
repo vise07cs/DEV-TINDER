@@ -26,10 +26,60 @@ app.post("/signup",async (req,res)=>{
     
   }
 
- 
+})
 
+
+
+// API to get user info from emailid
+
+
+app.get("/user",async (req,res)=>{
+  const userEmail=(req.body.email)
+try {
+  
+  console.log(userEmail)
+  console.log(userEmail.length)
+  if(userEmail.length==0){
+    res.status(404).send("Email not entered")
+  }
+  else{
+    
+    let myuser=await User.find({ email:userEmail })      
+    res.send(myuser)
+    console.log(myuser)
+  }
+    
+} catch (error) {
+  res.status(404).send("Something went wrong")
+  
+}
+ 
+})
+
+// Feed API to get all the users form database
+app.get("/feed",async (req,res)=>{
+  const users=await User.find({})
+  try {
+    res.send(users)
+    console.log(users)
+    
+  } catch (error) {
+    res.status(404).send("Something went wrong")
+    
+  }
+  
 
 })
+// API to find a specefic user by id 
+app.get("/id",async (req,res)=>{
+    const userbyId=await User.findById('67adf54c8e4ff84a432875db')
+    res.send(userbyId)
+    console.log(userbyId)
+})
+
+
+
+
 
 connectDB().then(()=>{
   try {
