@@ -7,7 +7,7 @@ app.use(express.json());
 // middleware by express to convert json data(POSTMAN) to js objects
 
 let port=3001
-
+// API to add new user to the database
 app.post("/signup",async (req,res)=>{
 
   const user=new User(req.body);
@@ -22,7 +22,10 @@ app.post("/signup",async (req,res)=>{
     console.log('user added successfully');
       
   } catch (error) {
-    res.status(501).send("unable to add data ")
+    res.status(501).send("unable to add data "+error)
+
+    // console.log(error)
+    // res.send(error)
     
   }
 
