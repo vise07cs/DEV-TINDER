@@ -30,6 +30,11 @@ const userSchema=new Schema({
     type:String,
 
   },
+
+  skills:{
+
+    type:[""]
+  },
   gender:{
     type:String,
     validate: {

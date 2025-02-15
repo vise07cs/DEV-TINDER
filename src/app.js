@@ -95,14 +95,29 @@ app.delete("/user",async (req,res)=>{
 
 // API to update data of  a user in Database
 
-app.patch("/user",async (req,res)=>{
-  const userId=req.body.userId
+app.patch("/user/:userId",async (req,res)=>{
+  // API level validation
+  const userId=req.params?.userId;
+  const data=req.body;
   try {
-    let updateUser=await User.findByIdAndUpdate(userId,{firstName:"nikhil from Zerodha "})
-    console.log(updateUser.firstName +" "+ "updated")
+    let allowed_updates=["firstName","lastName","age","skills"];
+    let isAllowed=Object.keys(data).every((key)=>
+      allowed_updates.includes(key)
+    )
+    console.log(isAllowed)
+    
+    if(isAllowed==false){
+      throw new Error("Update not allowed")
+      
+    }
+
+    let updateUser=await User.findByIdAndUpdate(userId,data)
+    // console.log(updateUser.firstName +" "+ "updated")
+    console.log(updateUser)
     res.send("user updated successfully")    
   } catch (error) {
-    res.status(404).send("Something went wrong")
+    res.status(404).send("Something went wrong"+ error)
+    console.log(error)
     
     
   }
