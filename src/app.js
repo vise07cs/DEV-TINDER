@@ -1,6 +1,9 @@
 const express=require("express");
 const {connectDB}=require("./config/database.js")
+
 const User=require("./model/user.js")
+const {validateUser}=require("./utils/validations.js")
+const bcrypt = require('bcrypt');
 const app=express();
 
 app.use(express.json());
@@ -9,13 +12,26 @@ app.use(express.json());
 let port=3001
 // API to add new user to the database
 app.post("/signup",async (req,res)=>{
-
-  const user=new User(req.body);
+  // creating a helper function to validate the data entered
   // creating a new user 
+// not a good idea to use req.body as attackers might send malicious data 
+ try {
+    // validateUser(req)
+    const { firstName, lastName, email, password } = validateUser(req);
 
+    // const { password }=req.body;
+    const passwordHash=await bcrypt.hash(password,10);
+    console.log(passwordHash);
 
-  try {
-    console.log(req.body)
+    const user=new User({
+    firstName,
+    lastName,
+    email,
+    password:passwordHash,
+  });
+  console.log(user)
+
+    // console.log(req.body)
     // console.log(req.body) will log the data is js object format due to middleware(express.json) 
     await user.save();
     res.send("user added successfully")
@@ -23,8 +39,10 @@ app.post("/signup",async (req,res)=>{
       
   } catch (error) {
     res.status(501).send("unable to add data "+error)
+    console.log(error)
 
-    // console.log(error)
+
+    console.log(error)
     // res.send(error)
     
   }
@@ -109,6 +127,10 @@ app.patch("/user/:userId",async (req,res)=>{
     if(isAllowed==false){
       throw new Error("Update not allowed")
       
+    }
+
+    if(data.skills.length>7){
+      throw new error("ONLY 7 SKILLS ALLOWED AT MAX")
     }
 
     let updateUser=await User.findByIdAndUpdate(userId,data)
