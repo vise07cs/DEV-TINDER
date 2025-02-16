@@ -16,10 +16,10 @@ app.post("/signup",async (req,res)=>{
   // creating a new user 
 // not a good idea to use req.body as attackers might send malicious data 
  try {
-    // validateUser(req)
+   
     const { firstName, lastName, email, password } = validateUser(req);
 
-    // const { password }=req.body;
+  
     const passwordHash=await bcrypt.hash(password,10);
     console.log(passwordHash);
 
@@ -31,8 +31,7 @@ app.post("/signup",async (req,res)=>{
   });
   console.log(user)
 
-    // console.log(req.body)
-    // console.log(req.body) will log the data is js object format due to middleware(express.json) 
+  
     await user.save();
     res.send("user added successfully")
     console.log('user added successfully');
@@ -49,7 +48,36 @@ app.post("/signup",async (req,res)=>{
 
 })
 
+app.post("/login",async (req,res)=>{
+  try {
+    const{email,password}=req.body;
+    const user=await User.findOne({email:email})
+    if(!user){
+      throw new Error("user does not exist");
+      
+    }
+  
+    // else if((validator.isEmail(email))==false){
+    //   throw new Error("invalid email");
+      
+    // }
+    
+    const validPassword=await bcrypt.compare(password,user.password)
+    if(!validPassword){
+      throw new Error("Invalid Password");
+      
+    }
+    else{
+      res.send("Login sucessful")
+    }
+    
+  } catch (error) {
+    res.send("Something went wrong  "+error)
+    
+  }
 
+
+})
 
 // API to get user info from emailid
 app.get("/user",async (req,res)=>{
