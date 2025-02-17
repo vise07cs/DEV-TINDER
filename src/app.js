@@ -4,10 +4,15 @@ const {connectDB}=require("./config/database.js")
 const User=require("./model/user.js")
 const {validateUser}=require("./utils/validations.js")
 const bcrypt = require('bcrypt');
+const cookieParser = require('cookie-parser')
+const jwt = require('jsonwebtoken');
 const app=express();
 
 app.use(express.json());
 // middleware by express to convert json data(POSTMAN) to js objects
+
+app.use(cookieParser());
+// middleware to read cookies
 
 let port=3001
 // API to add new user to the database
@@ -56,8 +61,10 @@ app.post("/login",async (req,res)=>{
       throw new Error("user does not exist");
       
     }
+
   
-    // else if((validator.isEmail(email))==false){
+    // if((validator.isEmail(email))==false){
+    //   console.log("validator failed")
     //   throw new Error("invalid email");
       
     // }
@@ -68,7 +75,19 @@ app.post("/login",async (req,res)=>{
       
     }
     else{
+      // to generate JWT token
+      const token=await jwt.sign({_id:user._id},"DevTinder@123")
+      res.cookie("token",token)
+      
       res.send("Login sucessful")
+      // res.send(cookie)
+      // console.log(cookie)
+
+
+
+
+
+
     }
     
   } catch (error) {
@@ -172,6 +191,35 @@ app.patch("/user/:userId",async (req,res)=>{
     
   }
 
+})
+
+
+app.get("/profile",async (req,res)=>{
+  try {
+    const cookies=req.cookies;
+    const {token}=cookies
+    if(!token){
+     throw new Error("Invalid token");
+     
+    }
+    const decodedMsg=await jwt.verify(token,"DevTinder@123")
+    const {_id}=decodedMsg;
+    console.log("logged in user is " + _id )
+
+    const user=await User.findById(_id);
+    if(!user){
+      throw new Error("user does not exist");
+      
+    }
+
+    res.send(user);
+
+    
+  } catch (error) {
+    res.status(501).send("something went wrong "+ error)
+    
+  }
+  
 })
 
 
