@@ -52,7 +52,6 @@ app.post("/signup",async (req,res)=>{
   }
 
 })
-
 app.post("/login",async (req,res)=>{
   try {
     const{email,password}=req.body;
@@ -62,31 +61,26 @@ app.post("/login",async (req,res)=>{
       
     }
 
-  
-    
-    const validPassword=await bcrypt.compare(password,user.password)
-    if(!validPassword){
+    const isPasswordValid=await user.validatePassword(password);
+
+    if(!isPasswordValid){
       throw new Error("Invalid Password");
       
     }
     else{
       // to generate JWT token
-      const token=await jwt.sign({_id:user._id},"DevTinder@123")
+
+      const token=await user.getJWT();
+     
       res.cookie("token",token)
       
       res.send("Login sucessful")
-      // res.send(cookie)
-      // console.log(cookie)
-
-
-
-
-
 
     }
     
   } catch (error) {
     res.send("Something went wrong  "+error)
+    console.log(error)
     
   }
 
