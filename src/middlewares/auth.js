@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const User=require("../model/user.js");
 
 
+
 const userAuth=async (req,res,next)=>{
   try {
     const {token}=req.cookies;
@@ -22,6 +23,7 @@ const userAuth=async (req,res,next)=>{
   
     
   } catch (error) {
+    console.log(error)
     res.status(501).send("Something went wrong" + error)
     
   }
