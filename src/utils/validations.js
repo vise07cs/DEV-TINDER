@@ -18,4 +18,15 @@ const validateUser = (req) => {
     return { firstName, lastName, email, password }; // Return the extracted data
 };
 
-module.exports = { validateUser };
+const validateEditDetails=(req)=>{
+    const editableFields=["firstName","lastName","age","about","skills"];
+    const isEditAllowed=Object.keys(req.body).every(fields=>editableFields.includes(fields))
+    if(isEditAllowed==false){
+        throw new Error("Edit not allowed");
+        
+    }
+    return isEditAllowed;
+
+}
+
+module.exports = { validateUser,validateEditDetails };
