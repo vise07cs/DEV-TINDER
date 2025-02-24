@@ -66,7 +66,7 @@ profileRoute.patch("/profile/edit",userAuth,async (req,res)=>{
 profileRoute.patch("/profile/edit/password",userAuth,async (req,res)=>{
 
    try {
-    
+
     const { oldPassword, newPassword } = req.body;
 
     if (!oldPassword || !newPassword) {
@@ -104,3 +104,5 @@ profileRoute.patch("/profile/edit/password",userAuth,async (req,res)=>{
   })
  
 module.exports=profileRoute
+
+// no codes written on 23,24th of Feb
