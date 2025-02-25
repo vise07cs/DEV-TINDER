@@ -12,10 +12,12 @@ app.use(express.json());
 
 const authRoute=require("./routes/auth.js")
 const profileRoute=require("./routes/profile.js")
+const requestRoute=require("./routes/requests.js")
 
 app.use(cookieParser());
 app.use("/",authRoute)
 app.use("/",profileRoute)
+app.use("/",requestRoute)
 // middleware by express to convert json data(POSTMAN) to js objects
 
 // middleware to read cookies

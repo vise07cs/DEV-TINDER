@@ -12,7 +12,7 @@ const {userAuth}=require('../middlewares/auth.js')
 const {validateEditDetails}=require("../utils/validations.js")
 
 
-
+// get user details
 profileRoute.get("/profile/view",userAuth, async (req,res)=>{
   try {
     const user=req.user;
@@ -27,6 +27,7 @@ profileRoute.get("/profile/view",userAuth, async (req,res)=>{
   }
   
 })
+
 // edit profile 
 profileRoute.patch("/profile/edit",userAuth,async (req,res)=>{
   try {
@@ -62,6 +63,7 @@ profileRoute.patch("/profile/edit",userAuth,async (req,res)=>{
 
 
 
+// edit password
 
 profileRoute.patch("/profile/edit/password",userAuth,async (req,res)=>{
 
@@ -105,4 +107,3 @@ profileRoute.patch("/profile/edit/password",userAuth,async (req,res)=>{
  
 module.exports=profileRoute
 
-// no codes written on 23,24th of Feb

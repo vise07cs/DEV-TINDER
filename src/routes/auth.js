@@ -13,7 +13,7 @@ const cookieParser = require('cookie-parser')
 // to add new user to the db
 authRoute.post("/signup",async (req,res)=>{
   // creating a helper function to validate the data entered
-  // creating a new user 
+
 // not a good idea to use req.body as attackers might send malicious data 
  try {
 
@@ -25,6 +25,7 @@ authRoute.post("/signup",async (req,res)=>{
     const passwordHash=await bcrypt.hash(password,10);
     console.log(passwordHash);
 
+      // Adding new user to DB 
     const user=new User({
     firstName,
     lastName,
@@ -43,8 +44,7 @@ authRoute.post("/signup",async (req,res)=>{
     console.log(error)
 
 
-    console.log(error)
-    // res.send(error)
+   
     
   }
 
