@@ -4,22 +4,20 @@ const { Connection } = require("mongoose");
 const requestRoute=express.Router();
 const ConnectionRequest=require ("../model/connectionRequest.js");
 const User = require("../model/user.js");
+const mongoose=require("mongoose")
 
 
-
-
-
+// sending a connection request
 
 requestRoute.post("/request/send/:status/:toUserId",userAuth,async (req,res)=>{
   try {
 
-    
   
-    
     const fromUserId=req.user._id;
     const toUserId=req.params.toUserId;
     const status=req.params.status 
 
+    // if the status type is invalid
     const allowedStatus=["interested","ignore"]
     if(!allowedStatus.includes(status)){
       return res.status(400).send("invalid status type:  "+ status)
@@ -65,7 +63,36 @@ requestRoute.post("/request/send/:status/:toUserId",userAuth,async (req,res)=>{
   }
 })
 
+// the logged in user will either accept or reject the request
+requestRoute.post("/request/review/:status/:requestId",userAuth,async (req,res)=>{
+  const loggedInUser=req.user;
+  const {status,requestId}=req.params
+  const allowedStatus=["accepted","rejected"]
+  if(!allowedStatus.includes(status)){
+    res.status(400).send("Invalid status type")
+  }
+  const connectionRequest=await ConnectionRequest.findOne({
+    _id:requestId,
+    // below line to verify the request has been sent to logged in user
+    toUserId:loggedInUser._id,
 
+    // the status of the sent request  should be interseted 
+
+    status:"interested",
+
+  })
+ 
+
+  if(!connectionRequest){
+    res.status(400).send('Invalid request ')
+  }
+  connectionRequest.status=status;
+  const data=await connectionRequest.save();
+  res.send("data saved successfully and status is "+status + data)
+            
+
+
+})
 
 
 

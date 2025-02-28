@@ -9,7 +9,6 @@ const {validateUser}=require("../utils/validations.js")
 const cookieParser = require('cookie-parser')
 
 
-
 // to add new user to the db
 authRoute.post("/signup",async (req,res)=>{
   // creating a helper function to validate the data entered
