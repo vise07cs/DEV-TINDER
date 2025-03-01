@@ -87,6 +87,7 @@ authRoute.post("/login",async (req,res)=>{
 
 })
 
+// to logout
 
 authRoute.post("/logout",async (req,res)=>{
   res.cookie("token", null,{

@@ -13,11 +13,13 @@ app.use(express.json());
 const authRoute=require("./routes/auth.js")
 const profileRoute=require("./routes/profile.js")
 const requestRoute=require("./routes/requests.js")
+const userRoute=require("./routes/users.js")
 
 app.use(cookieParser());
 app.use("/",authRoute)
 app.use("/",profileRoute)
 app.use("/",requestRoute)
+app.use("/",userRoute)
 // middleware by express to convert json data(POSTMAN) to js objects
 
 // middleware to read cookies
@@ -56,4 +58,3 @@ connectDB().then(()=>{
 
 
 
-// no updates on feb27th
