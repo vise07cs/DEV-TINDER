@@ -67,6 +67,9 @@ userRoute.get("/user/connections",userAuth,async(req,res)=>{
   res.json({ success: true, data });
 })
 
+
+// api to get the feed of logged in user with pagination feature .
+
 userRoute.get("/feed",userAuth,async (req,res)=>{
   try {
     const loggedInUser=req.user;

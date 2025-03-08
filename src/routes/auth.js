@@ -57,7 +57,7 @@ authRoute.post("/login",async (req,res)=>{
     const{email,password}=req.body;
     const user=await User.findOne({email:email})
     if(!user){
-      throw new Error("user does not exist");
+      throw new Error("user does not exist in db");
       
     }
 
@@ -74,7 +74,7 @@ authRoute.post("/login",async (req,res)=>{
      
       res.cookie("token",token)
       
-      res.send("Login sucessful")
+      res.send("Login sucessful "+ user)
 
     }
     

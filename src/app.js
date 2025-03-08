@@ -7,6 +7,14 @@ const bcrypt = require('bcrypt');
 const cookieParser = require('cookie-parser')
 const jwt = require('jsonwebtoken');
 const app=express();
+
+const cors=require("cors")
+
+app.use(cors({
+  origin: "http://localhost:5181", // ✅ No trailing slash
+  credentials: true
+}));
+
 // const {userAuth}=require('./middlewares/auth.js')
 app.use(express.json());
 
